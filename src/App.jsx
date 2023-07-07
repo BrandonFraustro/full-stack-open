@@ -1,4 +1,3 @@
-import { render } from 'react-dom'
 import './App.css'
 
 
@@ -7,9 +6,21 @@ const Header = (props) => {
     <h1>{props.course}</h1>
   )
 }
-const Content = (props) => {
+
+const Part = (props) => {
   return (
-    <p>{props.parts} {props.exersices}</p>
+    <p>part {props.part} exersice {props.exersices}</p>
+  )
+}
+
+const Content = (props) => {
+  const { parts } = props
+  return (
+    <div>
+      {parts.map(part => (
+        <Part key={part.part} part={part.part} exersices={part.exersices}/>
+      ))}
+    </div>
   )
 }
 const Total = (props) => {
@@ -20,19 +31,17 @@ const Total = (props) => {
 
 function App() {
   const course = 'Half Stack application development' 
-  const part1 = 'Fundamentals of React' 
-  const exersices1 = 10
-  const part2 = 'Using props to pass data' 
-  const exersices2 = 7
-  const part3 = 'State of a component'
-  const exersices3 = 14
+  const parts = [
+    { part: 'Fundamentals of React', exersices: 10 },
+    { part: 'Using props to pass data', exersices: 7 },
+    { part: 'State of a component', exersices: 14 },
+  ]
+  const totalExercises = parts.reduce((sum, part) => sum + part.exersices, 0)
   return (
     <div>
       <Header course={course} />
-      <Content parts={part1} exersices={exersices1}/>
-      <Content parts={part2} exersices={exersices2}/>
-      <Content parts={part3} exersices={exersices3}/>
-      <Total total={exersices1 + exersices2 + exersices3}/>
+      <Content parts={parts}/>
+      <Total total={totalExercises}/>
     </div>
   )
 }
